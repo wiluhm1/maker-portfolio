@@ -1,0 +1,32 @@
+[3.227s] Invoking command in '/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/src/drone_control': PYTHONPATH=/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/prefix_override:/home/zuri2102/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/drone_control build --build-base /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build install --record /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/install.log --single-version-externally-managed install_data
+[4.590s] running egg_info
+[4.598s] creating ../../build/drone_control/drone_control.egg-info
+[4.630s] writing ../../build/drone_control/drone_control.egg-info/PKG-INFO
+[4.676s] writing dependency_links to ../../build/drone_control/drone_control.egg-info/dependency_links.txt
+[4.705s] writing requirements to ../../build/drone_control/drone_control.egg-info/requires.txt
+[4.728s] writing top-level names to ../../build/drone_control/drone_control.egg-info/top_level.txt
+[4.750s] writing manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'
+[4.968s] reading manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'
+[5.143s] writing manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'
+[5.149s] running build
+[5.155s] running build_py
+[5.168s] creating /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build
+[5.171s] creating /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build/lib
+[5.176s] creating /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build/lib/drone_control
+[5.194s] copying drone_control/__init__.py -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build/lib/drone_control
+[5.223s] running install
+[5.230s] running install_lib
+[5.284s] creating /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control
+[5.314s] copying /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build/lib/drone_control/__init__.py -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control
+[5.388s] byte-compiling /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control/__init__.py to __init__.cpython-310.pyc
+[5.437s] running install_data
+[5.446s] creating /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/share/ament_index
+[5.454s] creating /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/share/ament_index/resource_index
+[5.463s] creating /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/share/ament_index/resource_index/packages
+[5.479s] copying resource/drone_control -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/share/ament_index/resource_index/packages
+[5.512s] copying package.xml -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/share/drone_control
+[5.538s] running install_egg_info
+[5.584s] Copying ../../build/drone_control/drone_control.egg-info to /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control-0.0.0-py3.10.egg-info
+[6.107s] running install_scripts
+[6.445s] writing list of installed files to '/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/install.log'
+[6.485s] Invoked command in '/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/src/drone_control' returned '0': PYTHONPATH=/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/prefix_override:/home/zuri2102/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/drone_control build --build-base /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build install --record /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/install.log --single-version-externally-managed install_data

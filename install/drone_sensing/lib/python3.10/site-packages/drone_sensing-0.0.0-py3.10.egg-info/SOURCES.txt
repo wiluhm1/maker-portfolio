@@ -1,0 +1,14 @@
+package.xml
+setup.cfg
+setup.py
+../../build/drone_sensing/drone_sensing.egg-info/PKG-INFO
+../../build/drone_sensing/drone_sensing.egg-info/SOURCES.txt
+../../build/drone_sensing/drone_sensing.egg-info/dependency_links.txt
+../../build/drone_sensing/drone_sensing.egg-info/requires.txt
+../../build/drone_sensing/drone_sensing.egg-info/top_level.txt
+../../build/drone_sensing/drone_sensing.egg-info/zip-safe
+drone_sensing/__init__.py
+resource/drone_sensing
+test/test_copyright.py
+test/test_flake8.py
+test/test_pep257.py
