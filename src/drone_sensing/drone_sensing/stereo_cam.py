@@ -1,5 +1,10 @@
 import rclpy
 from rclpy.node import Node
+import cv2
+import depthai as dai
+import numpy as np
+import math
+import time
 
 class StereoCam(Node):
 
@@ -13,7 +18,7 @@ class StereoCam(Node):
         msg = String() #TODO message type
         msg.data = #TODO % self.i
         self.stereo_cam_pub.publish(msg)
-        self.get_logger().info('Publishing: "%s"' % msg.data)
+        self.get_logger().info('Publsyishing: "%s"' % msg.data)
         self.i += 1
 
 
