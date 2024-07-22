@@ -20,6 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+            "dc_node = drone_sensing.downward_cam:main",
+            "stereo_node = drone_sensing.stereo_cam:main"
         ],
     },
 )
