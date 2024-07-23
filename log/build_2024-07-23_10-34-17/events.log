@@ -1,0 +1,174 @@
+[0.000000] (-) TimerEvent: {}
+[0.001152] (drone_control) JobQueued: {'identifier': 'drone_control', 'dependencies': OrderedDict()}
+[0.001825] (drone_sensing) JobQueued: {'identifier': 'drone_sensing', 'dependencies': OrderedDict()}
+[0.002439] (drone_control) JobStarted: {'identifier': 'drone_control'}
+[0.099036] (-) TimerEvent: {}
+[0.200531] (-) TimerEvent: {}
+[0.222013] (drone_sensing) JobStarted: {'identifier': 'drone_sensing'}
+[0.300773] (-) TimerEvent: {}
+[0.402088] (-) TimerEvent: {}
+[0.502872] (-) TimerEvent: {}
+[0.604397] (-) TimerEvent: {}
+[0.780560] (-) TimerEvent: {}
+[0.989831] (-) TimerEvent: {}
+[1.095391] (-) TimerEvent: {}
+[1.197216] (-) TimerEvent: {}
+[1.305804] (-) TimerEvent: {}
+[1.449063] (-) TimerEvent: {}
+[1.557775] (-) TimerEvent: {}
+[1.661308] (-) TimerEvent: {}
+[1.763178] (-) TimerEvent: {}
+[1.863699] (-) TimerEvent: {}
+[1.965572] (-) TimerEvent: {}
+[2.110880] (-) TimerEvent: {}
+[2.243369] (-) TimerEvent: {}
+[2.344554] (-) TimerEvent: {}
+[2.446232] (-) TimerEvent: {}
+[2.548418] (-) TimerEvent: {}
+[2.649788] (-) TimerEvent: {}
+[2.751149] (-) TimerEvent: {}
+[2.852676] (-) TimerEvent: {}
+[3.005967] (-) TimerEvent: {}
+[3.115437] (-) TimerEvent: {}
+[3.217142] (-) TimerEvent: {}
+[3.320221] (-) TimerEvent: {}
+[3.427131] (-) TimerEvent: {}
+[3.529247] (-) TimerEvent: {}
+[3.631776] (-) TimerEvent: {}
+[3.734319] (-) TimerEvent: {}
+[3.835905] (-) TimerEvent: {}
+[3.938490] (-) TimerEvent: {}
+[4.050949] (-) TimerEvent: {}
+[4.152188] (-) TimerEvent: {}
+[4.253329] (-) TimerEvent: {}
+[4.358592] (-) TimerEvent: {}
+[4.464135] (-) TimerEvent: {}
+[4.608183] (-) TimerEvent: {}
+[4.709495] (-) TimerEvent: {}
+[4.810748] (-) TimerEvent: {}
+[4.911670] (-) TimerEvent: {}
+[5.013767] (-) TimerEvent: {}
+[5.115754] (-) TimerEvent: {}
+[5.217193] (-) TimerEvent: {}
+[5.319104] (-) TimerEvent: {}
+[5.419840] (-) TimerEvent: {}
+[5.523425] (-) TimerEvent: {}
+[5.552294] (drone_control) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/drone_control', 'build', '--build-base', '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build', 'install', '--record', '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/src/drone_control', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'zuri2102', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/zuri2102', 'OLDPWD': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/src', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'MANAGERPID': '909', 'SYSTEMD_EXEC_PID': '1117', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'TERMINATOR_DBUS_NAME': 'net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'COLCON_PREFIX_PATH': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install', 'ROS_DISTRO': 'humble', 'LOGNAME': 'zuri2102', 'JOURNAL_STREAM': '8:22749', '_': '/home/zuri2102/.local/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'zuri2102', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/opt/ros/humble/bin:/opt/gcc-arm-none-eabi-9-2020-q2-update/bin:/home/zuri2102/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/zuri2102-VirtualBox:@/tmp/.ICE-unix/1091,unix/zuri2102-VirtualBox:/tmp/.ICE-unix/1091', 'INVOCATION_ID': '980503a2676c4c86a159bfb145f2ea94', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'TERMINATOR_DBUS_PATH': '/net/tenshu/Terminator2', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'IBUS_DISABLE_SNOOPER': '1', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.JYCCR2', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control:/opt/ros/humble', 'SHELL': '/bin/bash', 'TERMINATOR_UUID': 'urn:uuid:c8d773ae-70ee-448a-a07c-a46b9922ad3f', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GJS_DEBUG_OUTPUT': 'stderr', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_control', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/prefix_override:/home/zuri2102/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'VTE_VERSION': '6800'}, 'shell': False}
+[5.623791] (-) TimerEvent: {}
+[5.640955] (drone_sensing) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', 'setup.py', 'egg_info', '--egg-base', '../../build/drone_sensing', 'build', '--build-base', '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build', 'install', '--record', '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/install.log', '--single-version-externally-managed', 'install_data'], 'cwd': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/src/drone_sensing', 'env': {'GJS_DEBUG_TOPICS': 'JS ERROR;JS LOG', 'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'zuri2102', 'XDG_SESSION_TYPE': 'wayland', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/humble/opt/rviz_ogre_vendor/lib:/opt/ros/humble/lib/x86_64-linux-gnu:/opt/ros/humble/lib', 'HOME': '/home/zuri2102', 'OLDPWD': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/src', 'DESKTOP_SESSION': 'ubuntu', 'ROS_PYTHON_VERSION': '3', 'GNOME_SHELL_SESSION_MODE': 'ubuntu', 'GTK_MODULES': 'gail:atk-bridge', 'MANAGERPID': '909', 'SYSTEMD_EXEC_PID': '1117', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1000/bus', 'COLORTERM': 'truecolor', 'TERMINATOR_DBUS_NAME': 'net.tenshu.Terminator25ef4b219e3b005583550f2b0f9f990c3', 'IM_CONFIG_PHASE': '1', 'WAYLAND_DISPLAY': 'wayland-0', 'COLCON_PREFIX_PATH': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install', 'ROS_DISTRO': 'humble', 'LOGNAME': 'zuri2102', 'JOURNAL_STREAM': '8:22749', '_': '/home/zuri2102/.local/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'USERNAME': 'zuri2102', 'TERM': 'xterm-256color', 'GNOME_DESKTOP_SESSION_ID': 'this-is-deprecated', 'ROS_LOCALHOST_ONLY': '0', 'PATH': '/opt/ros/humble/bin:/opt/gcc-arm-none-eabi-9-2020-q2-update/bin:/home/zuri2102/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/snap/bin', 'SESSION_MANAGER': 'local/zuri2102-VirtualBox:@/tmp/.ICE-unix/1091,unix/zuri2102-VirtualBox:/tmp/.ICE-unix/1091', 'INVOCATION_ID': '980503a2676c4c86a159bfb145f2ea94', 'XDG_MENU_PREFIX': 'gnome-', 'GNOME_SETUP_DISPLAY': ':1', 'XDG_RUNTIME_DIR': '/run/user/1000', 'DISPLAY': ':0', 'TERMINATOR_DBUS_PATH': '/net/tenshu/Terminator2', 'LANG': 'en_US.UTF-8', 'XDG_CURRENT_DESKTOP': 'ubuntu:GNOME', 'IBUS_DISABLE_SNOOPER': '1', 'XMODIFIERS': '@im=ibus', 'XDG_SESSION_DESKTOP': 'ubuntu', 'XAUTHORITY': '/run/user/1000/.mutter-Xwaylandauth.JYCCR2', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:', 'SSH_AGENT_LAUNCHER': 'gnome-keyring', 'SSH_AUTH_SOCK': '/run/user/1000/keyring/ssh', 'AMENT_PREFIX_PATH': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control:/opt/ros/humble', 'SHELL': '/bin/bash', 'TERMINATOR_UUID': 'urn:uuid:c8d773ae-70ee-448a-a07c-a46b9922ad3f', 'QT_ACCESSIBILITY': '1', 'GDMSESSION': 'ubuntu', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'GJS_DEBUG_OUTPUT': 'stderr', 'QT_IM_MODULE': 'ibus', 'PWD': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing', 'LC_ALL': 'en_US.UTF-8', 'XDG_CONFIG_DIRS': '/etc/xdg/xdg-ubuntu:/etc/xdg', 'XDG_DATA_DIRS': '/usr/share/ubuntu:/usr/local/share/:/usr/share/:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/prefix_override:/home/zuri2102/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages:/opt/ros/humble/lib/python3.10/site-packages:/opt/ros/humble/local/lib/python3.10/dist-packages', 'COLCON': '1', 'VTE_VERSION': '6800'}, 'shell': False}
+[5.765559] (-) TimerEvent: {}
+[5.875329] (-) TimerEvent: {}
+[5.976767] (-) TimerEvent: {}
+[6.077861] (-) TimerEvent: {}
+[6.179323] (-) TimerEvent: {}
+[6.281038] (-) TimerEvent: {}
+[6.387309] (-) TimerEvent: {}
+[6.500236] (-) TimerEvent: {}
+[6.602454] (-) TimerEvent: {}
+[6.707501] (-) TimerEvent: {}
+[6.809833] (-) TimerEvent: {}
+[6.910975] (-) TimerEvent: {}
+[7.012237] (-) TimerEvent: {}
+[7.115696] (-) TimerEvent: {}
+[7.234270] (-) TimerEvent: {}
+[7.460557] (-) TimerEvent: {}
+[7.562385] (-) TimerEvent: {}
+[7.667366] (drone_control) StdoutLine: {'line': b'running egg_info\n'}
+[7.677599] (-) TimerEvent: {}
+[7.708339] (drone_control) StdoutLine: {'line': b'writing ../../build/drone_control/drone_control.egg-info/PKG-INFO\n'}
+[7.769701] (drone_control) StdoutLine: {'line': b'writing dependency_links to ../../build/drone_control/drone_control.egg-info/dependency_links.txt\n'}
+[7.777754] (-) TimerEvent: {}
+[7.778967] (drone_control) StdoutLine: {'line': b'writing entry points to ../../build/drone_control/drone_control.egg-info/entry_points.txt\n'}
+[7.786028] (drone_control) StdoutLine: {'line': b'writing requirements to ../../build/drone_control/drone_control.egg-info/requires.txt\n'}
+[7.793703] (drone_control) StdoutLine: {'line': b'writing top-level names to ../../build/drone_control/drone_control.egg-info/top_level.txt\n'}
+[7.823167] (drone_sensing) StdoutLine: {'line': b'running egg_info\n'}
+[7.876747] (drone_sensing) StdoutLine: {'line': b'writing ../../build/drone_sensing/drone_sensing.egg-info/PKG-INFO\n'}
+[7.880771] (-) TimerEvent: {}
+[7.902703] (drone_sensing) StdoutLine: {'line': b'writing dependency_links to ../../build/drone_sensing/drone_sensing.egg-info/dependency_links.txt\n'}
+[7.941377] (drone_sensing) StdoutLine: {'line': b'writing entry points to ../../build/drone_sensing/drone_sensing.egg-info/entry_points.txt\n'}
+[7.949261] (drone_sensing) StdoutLine: {'line': b'writing requirements to ../../build/drone_sensing/drone_sensing.egg-info/requires.txt\n'}
+[7.956033] (drone_sensing) StdoutLine: {'line': b'writing top-level names to ../../build/drone_sensing/drone_sensing.egg-info/top_level.txt\n'}
+[7.978820] (drone_control) StdoutLine: {'line': b"reading manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'\n"}
+[7.982246] (-) TimerEvent: {}
+[8.080168] (drone_control) StdoutLine: {'line': b"writing manifest file '../../build/drone_control/drone_control.egg-info/SOURCES.txt'\n"}
+[8.083180] (-) TimerEvent: {}
+[8.086952] (drone_control) StdoutLine: {'line': b'running build\n'}
+[8.089609] (drone_control) StdoutLine: {'line': b'running build_py\n'}
+[8.094704] (drone_control) StdoutLine: {'line': b'copying drone_control/open_loop_control.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build/lib/drone_control\n'}
+[8.101188] (drone_sensing) StdoutLine: {'line': b"reading manifest file '../../build/drone_sensing/drone_sensing.egg-info/SOURCES.txt'\n"}
+[8.161955] (drone_control) StdoutLine: {'line': b'copying drone_control/__init__.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build/lib/drone_control\n'}
+[8.185473] (-) TimerEvent: {}
+[8.217509] (drone_control) StdoutLine: {'line': b'running install\n'}
+[8.220799] (drone_control) StdoutLine: {'line': b'running install_lib\n'}
+[8.283264] (drone_sensing) StdoutLine: {'line': b"writing manifest file '../../build/drone_sensing/drone_sensing.egg-info/SOURCES.txt'\n"}
+[8.286379] (-) TimerEvent: {}
+[8.289799] (drone_sensing) StdoutLine: {'line': b'running build\n'}
+[8.291697] (drone_sensing) StdoutLine: {'line': b'running build_py\n'}
+[8.303072] (drone_sensing) StdoutLine: {'line': b'copying drone_sensing/downward_cam.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing\n'}
+[8.355664] (drone_sensing) StdoutLine: {'line': b'copying drone_sensing/stereo_cam.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing\n'}
+[8.381014] (drone_control) StdoutLine: {'line': b'copying /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/build/lib/drone_control/open_loop_control.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control\n'}
+[8.389518] (-) TimerEvent: {}
+[8.393759] (drone_sensing) StdoutLine: {'line': b'copying drone_sensing/__init__.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing\n'}
+[8.430978] (drone_sensing) StdoutLine: {'line': b'running install\n'}
+[8.462011] (drone_sensing) StdoutLine: {'line': b'running install_lib\n'}
+[8.489815] (-) TimerEvent: {}
+[8.511351] (drone_control) StdoutLine: {'line': b'byte-compiling /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control/open_loop_control.py to open_loop_control.cpython-310.pyc\n'}
+[8.562567] (drone_control) StderrLine: {'line': b'  File "/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control/open_loop_control.py", line 10\n'}
+[8.567406] (drone_control) StderrLine: {'line': b'    self.subscription = self.create_subscription(#TODO, TODO, self.open_loop_callback, 10) # message type, topic name, callback function, queue size\n'}
+[8.570174] (drone_control) StderrLine: {'line': b'                                                ^\n'}
+[8.573104] (drone_control) StderrLine: {'line': b"SyntaxError: '(' was never closed\n"}
+[8.575647] (drone_control) StderrLine: {'line': b'\n'}
+[8.578607] (drone_sensing) StdoutLine: {'line': b'copying /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing/downward_cam.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing\n'}
+[8.590028] (-) TimerEvent: {}
+[8.591462] (drone_control) StdoutLine: {'line': b'running install_data\n'}
+[8.647137] (drone_control) StdoutLine: {'line': b'copying resource/drone_control -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/share/ament_index/resource_index/packages\n'}
+[8.651522] (drone_sensing) StdoutLine: {'line': b'copying /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing/stereo_cam.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing\n'}
+[8.690262] (-) TimerEvent: {}
+[8.705332] (drone_control) StdoutLine: {'line': b'copying package.xml -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/share/drone_control\n'}
+[8.767723] (drone_control) StdoutLine: {'line': b'running install_egg_info\n'}
+[8.791383] (-) TimerEvent: {}
+[8.813870] (drone_sensing) StdoutLine: {'line': b'byte-compiling /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing/downward_cam.py to downward_cam.cpython-310.pyc\n'}
+[8.859425] (drone_sensing) StdoutLine: {'line': b'byte-compiling /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing/stereo_cam.py to stereo_cam.cpython-310.pyc\n'}
+[8.887244] (drone_control) StdoutLine: {'line': b"removing '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control-0.0.0-py3.10.egg-info' (and everything under it)\n"}
+[8.891440] (-) TimerEvent: {}
+[8.891972] (drone_sensing) StderrLine: {'line': b'  File "/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing/stereo_cam.py", line 93\n'}
+[8.894731] (drone_sensing) StderrLine: {'line': b'    self.stereo_cam_pub = self.create_publisher( #TODO, #TODO, 10))  # message type, topic name, queue size\n'}
+[8.897941] (drone_sensing) StderrLine: {'line': b'                                               ^\n'}
+[8.901021] (drone_sensing) StderrLine: {'line': b"SyntaxError: '(' was never closed\n"}
+[8.904503] (drone_sensing) StderrLine: {'line': b'\n'}
+[8.916853] (drone_sensing) StdoutLine: {'line': b'running install_data\n'}
+[8.953761] (drone_sensing) StdoutLine: {'line': b'copying resource/drone_sensing -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/share/ament_index/resource_index/packages\n'}
+[8.981310] (drone_control) StdoutLine: {'line': b'Copying ../../build/drone_control/drone_control.egg-info to /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control-0.0.0-py3.10.egg-info\n'}
+[8.991709] (-) TimerEvent: {}
+[9.000175] (drone_sensing) StdoutLine: {'line': b'copying package.xml -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/share/drone_sensing\n'}
+[9.062399] (drone_sensing) StdoutLine: {'line': b'running install_egg_info\n'}
+[9.092177] (-) TimerEvent: {}
+[9.175286] (drone_sensing) StdoutLine: {'line': b"removing '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing-0.0.0-py3.10.egg-info' (and everything under it)\n"}
+[9.192466] (-) TimerEvent: {}
+[9.278818] (drone_sensing) StdoutLine: {'line': b'Copying ../../build/drone_sensing/drone_sensing.egg-info to /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing-0.0.0-py3.10.egg-info\n'}
+[9.292877] (-) TimerEvent: {}
+[9.394556] (-) TimerEvent: {}
+[9.474471] (drone_control) StdoutLine: {'line': b'running install_scripts\n'}
+[9.494904] (-) TimerEvent: {}
+[9.596099] (-) TimerEvent: {}
+[9.673722] (drone_sensing) StdoutLine: {'line': b'running install_scripts\n'}
+[9.700466] (-) TimerEvent: {}
+[9.802307] (-) TimerEvent: {}
+[9.904393] (-) TimerEvent: {}
+[10.006620] (-) TimerEvent: {}
+[10.108233] (drone_control) StdoutLine: {'line': b'Installing open_loop_node script to /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/drone_control\n'}
+[10.109675] (-) TimerEvent: {}
+[10.135358] (drone_control) StdoutLine: {'line': b"writing list of installed files to '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_control/install.log'\n"}
+[10.186534] (drone_control) CommandEnded: {'returncode': 0}
+[10.210065] (-) TimerEvent: {}
+[10.229717] (drone_sensing) StdoutLine: {'line': b'Installing dc_node script to /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/drone_sensing\n'}
+[10.267908] (drone_sensing) StdoutLine: {'line': b'Installing stereo_node script to /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/drone_sensing\n'}
+[10.292321] (drone_sensing) StdoutLine: {'line': b"writing list of installed files to '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/install.log'\n"}
+[10.310392] (-) TimerEvent: {}
+[10.414063] (-) TimerEvent: {}
+[10.473241] (drone_control) JobEnded: {'identifier': 'drone_control', 'rc': 0}
+[10.485191] (drone_sensing) CommandEnded: {'returncode': 0}
+[10.608691] (-) TimerEvent: {}
+[10.712194] (drone_sensing) JobEnded: {'identifier': 'drone_sensing', 'rc': 0}
+[10.719749] (-) TimerEvent: {}
+[10.719987] (-) EventReactorShutdown: {}

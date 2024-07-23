@@ -1,0 +1,5 @@
+  File "/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_control/lib/python3.10/site-packages/drone_control/open_loop_control.py", line 10
+    self.subscription = self.create_subscription(#TODO, TODO, self.open_loop_callback, 10) # message type, topic name, callback function, queue size
+                                                ^
+SyntaxError: '(' was never closed
+

@@ -1,0 +1,35 @@
+[3.619s] Invoking command in '/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/src/drone_sensing': PYTHONPATH=/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/prefix_override:/home/zuri2102/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/drone_sensing build --build-base /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build install --record /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/install.log --single-version-externally-managed install_data
+[4.692s] running egg_info
+[4.736s] writing ../../build/drone_sensing/drone_sensing.egg-info/PKG-INFO
+[4.764s] writing dependency_links to ../../build/drone_sensing/drone_sensing.egg-info/dependency_links.txt
+[4.769s] writing entry points to ../../build/drone_sensing/drone_sensing.egg-info/entry_points.txt
+[4.774s] writing requirements to ../../build/drone_sensing/drone_sensing.egg-info/requires.txt
+[4.777s] writing top-level names to ../../build/drone_sensing/drone_sensing.egg-info/top_level.txt
+[5.011s] reading manifest file '../../build/drone_sensing/drone_sensing.egg-info/SOURCES.txt'
+[5.066s] writing manifest file '../../build/drone_sensing/drone_sensing.egg-info/SOURCES.txt'
+[5.068s] running build
+[5.068s] running build_py
+[5.080s] copying drone_sensing/downward_cam.py -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing
+[5.098s] copying drone_sensing/stereo_cam.py -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing
+[5.118s] copying drone_sensing/__init__.py -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing
+[5.131s] running install
+[5.134s] running install_lib
+[5.191s] copying /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing/downward_cam.py -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing
+[5.275s] byte-compiling /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing/downward_cam.py to downward_cam.cpython-310.pyc
+[5.375s] byte-compiling /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing/stereo_cam.py to stereo_cam.cpython-310.pyc
+[5.403s]   File "/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing/stereo_cam.py", line 93
+[5.404s]     self.stereo_cam_pub = self.create_publisher( #TODO, #TODO, 10))  # message type, topic name, queue size
+[5.405s]                                                ^
+[5.407s] SyntaxError: '(' was never closed
+[5.408s] 
+[5.420s] running install_data
+[5.442s] copying resource/drone_sensing -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/share/ament_index/resource_index/packages
+[5.469s] copying package.xml -> /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/share/drone_sensing
+[5.488s] running install_egg_info
+[5.528s] removing '/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing-0.0.0-py3.10.egg-info' (and everything under it)
+[5.592s] Copying ../../build/drone_sensing/drone_sensing.egg-info to /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing-0.0.0-py3.10.egg-info
+[5.894s] running install_scripts
+[5.997s] Installing dc_node script to /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/drone_sensing
+[6.011s] Installing stereo_node script to /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/drone_sensing
+[6.028s] writing list of installed files to '/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/install.log'
+[6.235s] Invoked command in '/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/src/drone_sensing' returned '0': PYTHONPATH=/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/prefix_override:/home/zuri2102/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/drone_sensing build --build-base /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build install --record /mnt/c/Users/zuriy/Documents/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/install.log --single-version-externally-managed install_data

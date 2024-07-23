@@ -1,0 +1,2 @@
+[console_scripts]
+open_loop_node = drone_control.open_loop_control:main

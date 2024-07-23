@@ -1,0 +1,36 @@
+[5.444s] Invoking command in '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/src/drone_sensing': PYTHONPATH=/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/prefix_override:/home/zuri2102/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/drone_sensing build --build-base /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build install --record /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/install.log --single-version-externally-managed install_data
+[7.621s] running egg_info
+[7.658s] writing ../../build/drone_sensing/drone_sensing.egg-info/PKG-INFO
+[7.684s] writing dependency_links to ../../build/drone_sensing/drone_sensing.egg-info/dependency_links.txt
+[7.723s] writing entry points to ../../build/drone_sensing/drone_sensing.egg-info/entry_points.txt
+[7.729s] writing requirements to ../../build/drone_sensing/drone_sensing.egg-info/requires.txt
+[7.737s] writing top-level names to ../../build/drone_sensing/drone_sensing.egg-info/top_level.txt
+[7.882s] reading manifest file '../../build/drone_sensing/drone_sensing.egg-info/SOURCES.txt'
+[8.063s] writing manifest file '../../build/drone_sensing/drone_sensing.egg-info/SOURCES.txt'
+[8.069s] running build
+[8.072s] running build_py
+[8.083s] copying drone_sensing/downward_cam.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing
+[8.135s] copying drone_sensing/stereo_cam.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing
+[8.173s] copying drone_sensing/__init__.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing
+[8.239s] running install
+[8.242s] running install_lib
+[8.359s] copying /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing/downward_cam.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing
+[8.432s] copying /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build/lib/drone_sensing/stereo_cam.py -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing
+[8.594s] byte-compiling /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing/downward_cam.py to downward_cam.cpython-310.pyc
+[8.641s] byte-compiling /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing/stereo_cam.py to stereo_cam.cpython-310.pyc
+[8.672s]   File "/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing/stereo_cam.py", line 93
+[8.675s]     self.stereo_cam_pub = self.create_publisher( #TODO, #TODO, 10))  # message type, topic name, queue size
+[8.678s]                                                ^
+[8.681s] SyntaxError: '(' was never closed
+[8.685s] 
+[8.698s] running install_data
+[8.734s] copying resource/drone_sensing -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/share/ament_index/resource_index/packages
+[8.780s] copying package.xml -> /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/share/drone_sensing
+[8.843s] running install_egg_info
+[8.956s] removing '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing-0.0.0-py3.10.egg-info' (and everything under it)
+[9.060s] Copying ../../build/drone_sensing/drone_sensing.egg-info to /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages/drone_sensing-0.0.0-py3.10.egg-info
+[9.454s] running install_scripts
+[10.010s] Installing dc_node script to /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/drone_sensing
+[10.048s] Installing stereo_node script to /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/drone_sensing
+[10.072s] writing list of installed files to '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/install.log'
+[10.264s] Invoked command in '/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/src/drone_sensing' returned '0': PYTHONPATH=/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/prefix_override:/home/zuri2102/.local/lib/python3.10/site-packages/colcon_core/task/python/colcon_distutils_commands:/home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/install/drone_sensing/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated setup.py egg_info --egg-base ../../build/drone_sensing build --build-base /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/build install --record /home/zuri2102/sharedDocuments/bwsi-uav-good/flying_squirrels_architecture/build/drone_sensing/install.log --single-version-externally-managed install_data
