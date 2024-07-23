@@ -86,75 +86,88 @@ class FPSHandler:
     def fps(self):
         return self.frame_cnt / (self.timestamp - self.start)
 
-def run_depthai():
-    pipeline = dai.Pipeline()
-    monoLeft = pipeline.create(dai.node.MonoCamera)
-    monoRight = pipeline.create(dai.node.MonoCamera)
-    stereo = pipeline.create(dai.node.StereoDepth)
-    monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
-    monoLeft.setBoardSocket(dai.CameraBoardSocket.LEFT)
-    monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
-    monoRight.setBoardSocket(dai.CameraBoardSocket.RIGHT)
-    stereo.initialConfig.setConfidenceThreshold(255)
-    stereo.setLeftRightCheck(True)
-    stereo.setSubpixel(False)
-    monoLeft.out.link(stereo.left)
-    monoRight.out.link(stereo.right)
-    xoutDepth = pipeline.create(dai.node.XLinkOut)
-    xoutDepth.setStreamName("depth")
-    stereo.depth.link(xoutDepth.input)
-    xoutDisp = pipeline.create(dai.node.XLinkOut)
-    xoutDisp.setStreamName("disp")
-    stereo.disparity.link(xoutDisp.input)
+class StereoCam(Node):
 
-    with dai.Device(pipeline) as device:
-        depthQueue = device.getOutputQueue(name="depth")
-        dispQ = device.getOutputQueue(name="disp")
-        text = TextHelper()
-        fpsHandler = FPSHandler()
-        hostSpatials = HostSpatialsCalc(device)
-        y = 200
-        x = 300
-        step = 3
-        delta = 5
-        hostSpatials.setDeltaRoi(delta)
-        print("Use WASD keys to move ROI.\nUse 'r' and 'f' to change ROI size.")
-        while True:
-            depthData = depthQueue.get()
-            spatials, centroid = hostSpatials.calc_spatials(depthData, (x, y))
-            distance = spatials['z'] / 1000
-            print(f"Distance: {distance:.2f}m")  # Print distance for debugging
-            disp = dispQ.get().getFrame()
-            disp = (disp * (255 / stereo.initialConfig.getMaxDisparity())).astype(np.uint8)
-            disp = cv2.applyColorMap(disp, cv2.COLORMAP_JET)
-            text.rectangle(disp, (x - delta, y - delta), (x + delta, y + delta))
-            text.putText(disp, f"Distance: {distance:.2f}m", (x + 10, y + 20))
-            cv2.imshow("depth", disp)
-            fpsHandler.next_iter()
-            fps = fpsHandler.fps()
-            text.putText(disp, f"FPS: {fps:.2f}", (10, 30))
-            key = cv2.waitKey(1)
-            if key == ord('q'):
-                break
-            elif key == ord('w'):
-                y -= step
-            elif key == ord('a'):
-                x -= step
-            elif key == ord('s'):
-                y += step
-            elif key == ord('d'):
-                x += step
-            elif key == ord('r'):
-                if delta < 50:
-                    delta += 1
-                    hostSpatials.setDeltaRoi(delta)
-            elif key == ord('f'):
-                if 3 < delta:
-                    delta -= 1
-                    hostSpatials.setDeltaRoi(delta)
+    def __init__(self):
+        super().__init__('stereo_cam')
+        self.stereo_cam_pub = self.create_publisher( #TODO, #TODO, 10))  # message type, topic name, queue size
+        timer_period = 0.5  # seconds
+        self.timer = self.create_timer(timer_period, self.run_depthai) #TODO update name
+
+    def run_depthai(self):
+        pipeline = dai.Pipeline()
+        monoLeft = pipeline.create(dai.node.MonoCamera)
+        monoRight = pipeline.create(dai.node.MonoCamera)
+        stereo = pipeline.create(dai.node.StereoDepth)
+        monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+        monoLeft.setBoardSocket(dai.CameraBoardSocket.LEFT)
+        monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
+        monoRight.setBoardSocket(dai.CameraBoardSocket.RIGHT)
+        stereo.initialConfig.setConfidenceThreshold(255)
+        stereo.setLeftRightCheck(True)
+        stereo.setSubpixel(False)
+        monoLeft.out.link(stereo.left)
+        monoRight.out.link(stereo.right)
+        xoutDepth = pipeline.create(dai.node.XLinkOut)
+        xoutDepth.setStreamName("depth")
+        stereo.depth.link(xoutDepth.input)
+        xoutDisp = pipeline.create(dai.node.XLinkOut)
+        xoutDisp.setStreamName("disp")
+        stereo.disparity.link(xoutDisp.input)
+
+        with dai.Device(pipeline) as device:
+            depthQueue = device.getOutputQueue(name="depth")
+            dispQ = device.getOutputQueue(name="disp")
+            text = TextHelper()
+            fpsHandler = FPSHandler()
+            hostSpatials = HostSpatialsCalc(device)
+            y = 200
+            x = 300
+            step = 3
+            delta = 5
+            hostSpatials.setDeltaRoi(delta)
+            print("Use WASD keys to move ROI.\nUse 'r' and 'f' to change ROI size.")
+            while True:
+                depthData = depthQueue.get()
+                spatials, centroid = hostSpatials.calc_spatials(depthData, (x, y))
+                distance = spatials['z'] / 1000
+                print(f"Distance: {distance:.2f}m")  # Print distance for debugging
+                disp = dispQ.get().getFrame()
+                disp = (disp * (255 / stereo.initialConfig.getMaxDisparity())).astype(np.uint8)
+                disp = cv2.applyColorMap(disp, cv2.COLORMAP_JET)
+                text.rectangle(disp, (x - delta, y - delta), (x + delta, y + delta))
+                text.putText(disp, f"Distance: {distance:.2f}m", (x + 10, y + 20))
+                cv2.imshow("depth", disp)
+                fpsHandler.next_iter()
+                fps = fpsHandler.fps()
+                text.putText(disp, f"FPS: {fps:.2f}", (10, 30))
+                key = cv2.waitKey(1)
+                if key == ord('q'):
+                    break
+                elif key == ord('w'):
+                    y -= step
+                elif key == ord('a'):
+                    x -= step
+                elif key == ord('s'):
+                    y += step
+                elif key == ord('d'):
+                    x += step
+                elif key == ord('r'):
+                    if delta < 50:
+                        delta += 1
+                        hostSpatials.setDeltaRoi(delta)
+                elif key == ord('f'):
+                    if 3 < delta:
+                        delta -= 1
+                        hostSpatials.setDeltaRoi(delta)
+
+def main(args=None):
+    rclpy.init(args=args)
+    node = StereoCam()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        rclpy.shutdown()
 
 if __name__ == '__main__':
-    try:
-        run_depthai()
-    except KeyboardInterrupt:
-        pass
+    main()
