@@ -5,6 +5,9 @@ import depthai as dai
 import numpy as np
 import math
 import time
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image
 
 class HostSpatialsCalc:
     def __init__(self, device):
@@ -90,9 +93,11 @@ class StereoCam(Node):
 
     def __init__(self):
         super().__init__('stereo_cam')
-        self.stereo_cam_pub = self.create_publisher( #TODO, #TODO, 10))  # message type, topic name, queue size
+        self.stereo_cam_pub = self.create_publisher(Image, "/stereo/camera_feed", 10)  # message type, topic name, queue size
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.run_depthai) #TODO update name
+
+
 
     def run_depthai(self):
         pipeline = dai.Pipeline()
