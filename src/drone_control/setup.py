@@ -20,7 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "open_loop_node = drone_control.open_loop_control:main"
+            "open_loop_node = drone_control.open_loop_control:main",
+            "arm_disarm_node = drone_control.arm_disarm_node:main"
         ],
     },
 )
