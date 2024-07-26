@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+import rclpy
+from rclpy.node import Node
+
+import cv2 as cv
+
+from sensor_msgs.msg import Image
+
+from cv_bridge import CvBridge
+
+class ARTagsDetectNode(Node):
+    """
+    This is the node written to display image received from the topic.
+    """
+
+    br_: CvBridge
+    LIBRARY_: cv.aruco.Dictionary
+    PARAMETERS_ = cv.aruco.DetectorParameters
+    DETECTOR_: cv.aruco.ArucoDetector
+
+    def __init__(self):
+        super().__init__("camera_read_ar_tags")
+
+        # Create a subscriber.
+        self.create_subscription(Image, "/image_raw", self.receive_image_data, 10)
+
+        # Create the bridge for exporting images.
+        self.br_ = CvBridge()
+
+        self.LIBRARY_ = cv.aruco.getPredefinedDictionary(cv.aruco.DICT_5X5_100)
+        self.PARAMETERS_ = cv.aruco.DetectorParameters()
+        self.DETECTOR_ = cv.aruco.ArucoDetector(self.LIBRARY_, self.PARAMETERS_)
+
+        self.get_logger().info("Successfully launched the camera display module!")
+
+    def receive_image_data(self, msg: Image):
+        # cv.imshow("Frame", self.br.imgmsg_to_cv2(msg))
+        img = self.br_.imgmsg_to_cv2(msg)
+
+        markerCorners, markerIDs, rejectedCandidates = self.DETECTOR_.detectMarkers(cv.cvtColor(img, cv.COLOR_BGR2GRAY))
+
+        centers = []
+
+        if markerCorners != None and markerCorners != []:
+            for i in range(len(markerCorners)):
+                centers.append([(0.5 * (markerCorners[i][0][0][0] + markerCorners[i][0][1][0]), 0.5 * (markerCorners[i][0][0][1] + markerCorners[i][0][1][1])), markerIDs[i]])
+
+        self.get_logger().info(f"Detected Tag corners: {markerCorners}")
+        self.get_logger().info(f"Detected Tag Centers: {centers}")
+        self.get_logger().info(f"Detected Tag Labels: {markerIDs}")
+
+
+def main(args=None):
+    
+    rclpy.init(args=args)
+
+    # Create a node
+    node = ARTagsDetectNode()
+    rclpy.spin(node)
+
+    # Shutdown the rclpy
+    rclpy.shutdown()
+
+
+if __name__ == "__main__":
+    main()
