@@ -7,6 +7,7 @@ import math
 import time
 import rclpy
 from rclpy.node import Node
+from std_msgs.msg import Float32, Bool
 from sensor_msgs.msg import Image
 
 class HostSpatialsCalc:
@@ -94,7 +95,14 @@ class FPSHandler:
 class StereoCam(Node):
     def __init__(self):
         super().__init__('stereo_cam')
-        self.stereo_cam_pub = self.create_publisher(Image, "/stereo/camera_feed", 10)
+
+        # Create publishers for each ROI
+        self.center_publisher = self.create_publisher(Float32, 'roi_center_distance', 10)
+        self.left_publisher = self.create_publisher(Float32, 'roi_left_distance', 10)
+        self.right_publisher = self.create_publisher(Float32, 'roi_right_distance', 10)
+        self.top_publisher = self.create_publisher(Float32, 'roi_top_distance', 10)
+        self.bottom_publisher = self.create_publisher(Float32, 'roi_bottom_distance', 10)
+
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.run_depthai)
 
@@ -107,6 +115,7 @@ class StereoCam(Node):
             (0.25, 0.8, 0.75, 1.0)     # Bottom
         ]
         self.delta = 5
+        self.hostSpatials = None
 
     def run_depthai(self):
         pipeline = dai.Pipeline()
@@ -134,7 +143,7 @@ class StereoCam(Node):
             dispQ = device.getOutputQueue(name="disp")
             text = TextHelper()
             fpsHandler = FPSHandler()
-            hostSpatials = HostSpatialsCalc(device)
+            self.hostSpatials = HostSpatialsCalc(device)
 
             while True:
                 depthData = depthQueue.get()
@@ -148,8 +157,23 @@ class StereoCam(Node):
                         int(roi[0] * w), int(roi[1] * h),
                         int(roi[2] * w), int(roi[3] * h)
                     )
-                    spatials, centroid = hostSpatials.calc_spatials(depthData, roi_pixels)
+                    spatials, _ = self.hostSpatials.calc_spatials(depthData, roi_pixels)
                     distance = spatials['z'] / 1000  # Convert to meters
+
+                    # Publish distances based on ROI index
+                    msg = Float32()
+                    msg.data = distance
+
+                    if i == 0:  # Center
+                        self.center_publisher.publish(msg)
+                    elif i == 1:  # Left
+                        self.left_publisher.publish(msg)
+                    elif i == 2:  # Right
+                        self.right_publisher.publish(msg)
+                    elif i == 3:  # Top
+                        self.top_publisher.publish(msg)
+                    elif i == 4:  # Bottom
+                        self.bottom_publisher.publish(msg)
 
                     # Draw ROI rectangle
                     text.rectangle(frame, (roi_pixels[0], roi_pixels[1]), (roi_pixels[2], roi_pixels[3]))
@@ -167,11 +191,11 @@ class StereoCam(Node):
                 elif key == ord('r'):
                     if self.delta < 50:
                         self.delta += 1
-                        hostSpatials.setDeltaRoi(self.delta)
+                        self.hostSpatials.setDeltaRoi(self.delta)
                 elif key == ord('f'):
                     if 3 < self.delta:
                         self.delta -= 1
-                        hostSpatials.setDeltaRoi(self.delta)
+                        self.hostSpatials.setDeltaRoi(self.delta)
 
 def main(args=None):
     rclpy.init(args=args)
