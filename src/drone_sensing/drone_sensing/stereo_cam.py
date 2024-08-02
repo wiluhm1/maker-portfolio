@@ -1,146 +1,185 @@
 #!/usr/bin/env python3
 
-import rclpy
-from rclpy.node import Node
-from std_msgs.msg import Float32, Bool
 import cv2
 import depthai as dai
-import math
 import numpy as np
+import math
+import time
+import rclpy
+from rclpy.node import Node
+from sensor_msgs.msg import Image
 
-class DepthPublisher(Node):
+class HostSpatialsCalc:
+    def __init__(self, device):
+        self.calibData = device.readCalibration()
+        self.DELTA = 5
+        self.THRESH_LOW = 200
+        self.THRESH_HIGH = 30000
+
+    def setLowerThreshold(self, threshold_low):
+        self.THRESH_LOW = threshold_low
+
+    def setUpperThreshold(self, threshold_high):
+        self.THRESH_HIGH = threshold_high
+
+    def setDeltaRoi(self, delta):
+        self.DELTA = delta
+
+    def _check_input(self, roi, frame):
+        if len(roi) == 4:
+            return roi
+        if len(roi) != 2:
+            raise ValueError("You have to pass either ROI (4 values) or point (2 values)!")
+        self.DELTA = 5
+        x = min(max(roi[0], self.DELTA), frame.shape[1] - self.DELTA)
+        y = min(max(roi[1], self.DELTA), frame.shape[0] - self.DELTA)
+        return (x - self.DELTA, y - self.DELTA, x + self.DELTA, y + self.DELTA)
+
+    def _calc_angle(self, frame, offset, HFOV):
+        return math.atan(math.tan(HFOV / 2.0) * offset / (frame.shape[1] / 2.0))
+
+    def calc_spatials(self, depthData, roi, averaging_method=np.mean):
+        depthFrame = depthData.getFrame()
+        roi = self._check_input(roi, depthFrame)
+        xmin, ymin, xmax, ymax = roi
+        depthROI = depthFrame[ymin:ymax, xmin:xmax]
+        inRange = (self.THRESH_LOW <= depthROI) & (depthROI <= self.THRESH_HIGH)
+        HFOV = np.deg2rad(self.calibData.getFov(dai.CameraBoardSocket(depthData.getInstanceNum()), useSpec=False))
+        averageDepth = averaging_method(depthROI[inRange])
+        centroid = {
+            'x': int((xmax + xmin) / 2),
+            'y': int((ymax + ymin) / 2)
+        }
+        midW = int(depthFrame.shape[1] / 2)
+        midH = int(depthFrame.shape[0] / 2)
+        bb_x_pos = centroid['x'] - midW
+        bb_y_pos = centroid['y'] - midH
+        angle_x = self._calc_angle(depthFrame, bb_x_pos, HFOV)
+        angle_y = self._calc_angle(depthFrame, bb_y_pos, HFOV)
+        spatials = {
+            'z': averageDepth,
+            'x': averageDepth * math.tan(angle_x),
+            'y': -averageDepth * math.tan(angle_y)
+        }
+        return spatials, centroid
+
+class TextHelper:
+    def __init__(self) -> None:
+        self.bg_color = (0, 0, 0)
+        self.color = (255, 255, 255)
+        self.text_type = cv2.FONT_HERSHEY_SIMPLEX
+        self.line_type = cv2.LINE_AA
+
+    def putText(self, frame, text, coords):
+        cv2.putText(frame, text, coords, self.text_type, 0.5, self.bg_color, 3, self.line_type)
+        cv2.putText(frame, text, coords, self.text_type, 0.5, self.color, 1, self.line_type)
+
+    def rectangle(self, frame, p1, p2):
+        cv2.rectangle(frame, p1, p2, self.bg_color, 3)
+        cv2.rectangle(frame, p1, p2, self.color, 1)
+
+class FPSHandler:
     def __init__(self):
-        super().__init__('depth_publisher')
-        self.center_publisher = self.create_publisher(Float32, 'roi_center_distance', 10)
-        self.left_publisher = self.create_publisher(Float32, 'roi_left_distance', 10)
-        self.right_publisher = self.create_publisher(Float32, 'roi_right_distance', 10)
-        self.top_publisher = self.create_publisher(Float32, 'roi_top_distance', 10)
-        self.bottom_publisher = self.create_publisher(Float32, 'roi_bottom_distance', 10)
-        self.bool_publisher = self.create_publisher(Bool, 'roi_center_within_1m', 10)
+        self.timestamp = time.time() + 1
+        self.start = time.time()
+        self.frame_cnt = 0
 
-        # Create pipeline
+    def next_iter(self):
+        self.timestamp = time.time()
+        self.frame_cnt += 1
+
+    def fps(self):
+        return self.frame_cnt / (self.timestamp - self.start)
+
+class StereoCam(Node):
+    def __init__(self):
+        super().__init__('stereo_cam')
+        self.stereo_cam_pub = self.create_publisher(Image, "/stereo/camera_feed", 10)
+        timer_period = 0.5  # seconds
+        self.timer = self.create_timer(timer_period, self.run_depthai)
+
+        # Define multiple ROIs
+        self.rois = [
+            (0.25, 0.25, 0.75, 0.75),  # Center
+            (0.0, 0.25, 0.2, 0.75),    # Left
+            (0.8, 0.25, 1.0, 0.75),    # Right
+            (0.25, 0.0, 0.75, 0.2),    # Top
+            (0.25, 0.8, 0.75, 1.0)     # Bottom
+        ]
+        self.delta = 5
+
+    def run_depthai(self):
         pipeline = dai.Pipeline()
-
-        # Define sources and outputs
         monoLeft = pipeline.create(dai.node.MonoCamera)
         monoRight = pipeline.create(dai.node.MonoCamera)
         stereo = pipeline.create(dai.node.StereoDepth)
-        spatialLocationCalculator = pipeline.create(dai.node.SpatialLocationCalculator)
-
-        xoutDepth = pipeline.create(dai.node.XLinkOut)
-        xoutSpatialData = pipeline.create(dai.node.XLinkOut)
-        xinSpatialCalcConfig = pipeline.create(dai.node.XLinkIn)
-
-        xoutDepth.setStreamName("depth")
-        xoutSpatialData.setStreamName("spatialData")
-        xinSpatialCalcConfig.setStreamName("spatialCalcConfig")
-
-        # Properties
         monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
         monoLeft.setBoardSocket(dai.CameraBoardSocket.LEFT)
         monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
         monoRight.setBoardSocket(dai.CameraBoardSocket.RIGHT)
-
-        stereo.setDefaultProfilePreset(dai.node.StereoDepth.PresetMode.HIGH_DENSITY)
+        stereo.initialConfig.setConfidenceThreshold(255)
         stereo.setLeftRightCheck(True)
-        stereo.setSubpixel(True)
-        spatialLocationCalculator.inputConfig.setWaitForMessage(False)
-
-        # Create ROIs with a larger center box and peripheral side boxes
-        rois = [
-            (0.25, 0.25, 0.75, 0.75),  # Center
-            (0.0, 0.25, 0.2, 0.75),  # Left
-            (0.8, 0.25, 1.0, 0.75),  # Right
-            (0.25, 0.0, 0.75, 0.2),  # Top
-            (0.25, 0.8, 0.75, 1.0)   # Bottom
-        ]
-
-        for roi in rois:
-            config = dai.SpatialLocationCalculatorConfigData()
-            config.depthThresholds.lowerThreshold = 200
-            config.depthThresholds.upperThreshold = 10000
-            config.roi = dai.Rect(dai.Point2f(roi[0], roi[1]), dai.Point2f(roi[2], roi[3]))
-            spatialLocationCalculator.initialConfig.addROI(config)
-
-        # Linking
+        stereo.setSubpixel(False)
         monoLeft.out.link(stereo.left)
         monoRight.out.link(stereo.right)
+        xoutDepth = pipeline.create(dai.node.XLinkOut)
+        xoutDepth.setStreamName("depth")
+        stereo.depth.link(xoutDepth.input)
+        xoutDisp = pipeline.create(dai.node.XLinkOut)
+        xoutDisp.setStreamName("disp")
+        stereo.disparity.link(xoutDisp.input)
 
-        spatialLocationCalculator.passthroughDepth.link(xoutDepth.input)
-        stereo.depth.link(spatialLocationCalculator.inputDepth)
+        with dai.Device(pipeline) as device:
+            depthQueue = device.getOutputQueue(name="depth")
+            dispQ = device.getOutputQueue(name="disp")
+            text = TextHelper()
+            fpsHandler = FPSHandler()
+            hostSpatials = HostSpatialsCalc(device)
 
-        spatialLocationCalculator.out.link(xoutSpatialData.input)
-        xinSpatialCalcConfig.out.link(spatialLocationCalculator.inputConfig)
+            while True:
+                depthData = depthQueue.get()
+                frame = dispQ.get().getFrame()
+                frame = (frame * (255 / stereo.initialConfig.getMaxDisparity())).astype(np.uint8)
+                frame = cv2.applyColorMap(frame, cv2.COLORMAP_JET)
 
-        # Connect to device and start pipeline
-        self.device = dai.Device(pipeline)
-        self.depthQueue = self.device.getOutputQueue(name="depth", maxSize=4, blocking=False)
-        self.spatialCalcQueue = self.device.getOutputQueue(name="spatialData", maxSize=4, blocking=False)
+                for i, roi in enumerate(self.rois):
+                    h, w = frame.shape[:2]
+                    roi_pixels = (
+                        int(roi[0] * w), int(roi[1] * h),
+                        int(roi[2] * w), int(roi[3] * h)
+                    )
+                    spatials, centroid = hostSpatials.calc_spatials(depthData, roi_pixels)
+                    distance = spatials['z'] / 1000  # Convert to meters
 
-        self.timer = self.create_timer(0.1, self.timer_callback)
+                    # Draw ROI rectangle
+                    text.rectangle(frame, (roi_pixels[0], roi_pixels[1]), (roi_pixels[2], roi_pixels[3]))
+                    # Put distance text
+                    text.putText(frame, f"ROI {i+1}: {distance:.2f}m", (roi_pixels[0] + 10, roi_pixels[1] + 20))
 
-    def timer_callback(self):
-        inDepth = self.depthQueue.get()  # Blocking call, will wait until new data has arrived
-        depthFrame = inDepth.getFrame()  # depthFrame values are in millimeters
+                cv2.imshow("depth", frame)
+                fpsHandler.next_iter()
+                fps = fpsHandler.fps()
+                text.putText(frame, f"FPS: {fps:.2f}", (10, 30))
 
-        depth_downscaled = depthFrame[::4]
-        if np.all(depth_downscaled == 0):
-            min_depth = 0  # Set a default minimum depth value when all elements are zero
-        else:
-            min_depth = np.percentile(depth_downscaled[depth_downscaled != 0], 1)
-        max_depth = np.percentile(depth_downscaled, 99)
-        depthFrameColor = np.interp(depthFrame, (min_depth, max_depth), (0, 255)).astype(np.uint8)
-        depthFrameColor = cv2.applyColorMap(depthFrameColor, cv2.COLORMAP_HOT)
-
-        spatialData = self.spatialCalcQueue.get().getSpatialLocations()
-        distances = []
-        for i, depthData in enumerate(spatialData):
-            roi = depthData.config.roi
-            roi = roi.denormalize(width=depthFrameColor.shape[1], height=depthFrameColor.shape[0])
-
-            xmin = int(roi.topLeft().x)
-            ymin = int(roi.topLeft().y)
-            xmax = int(roi.bottomRight().x)
-            ymax = int(roi.bottomRight().y)
-
-            coords = depthData.spatialCoordinates
-            distance = math.sqrt(coords.x ** 2 + coords.y ** 2 + coords.z ** 2)
-            distances.append(distance / 1000.0)  # Convert to meters
-
-            cv2.rectangle(depthFrameColor, (xmin, ymin), (xmax, ymax), (0, 200, 40), thickness=2)
-            cv2.putText(depthFrameColor, "{:.1f}m".format(distance / 1000.0), (xmin + 10, ymin + 20), cv2.FONT_HERSHEY_TRIPLEX, 0.6, (0, 200, 40))
-
-            # Publish distances to respective topics
-            msg = Float32()
-            msg.data = distance / 1000.0  # Convert to meters
-
-            if i == 0:  # Center
-                self.center_publisher.publish(msg)
-                boolean_msg = Bool()
-                boolean_msg.data = bool(distance / 1000.0 <= 1.0)  # True if distance is 1 meter or less
-                self.bool_publisher.publish(boolean_msg)
-                self.get_logger().info(f"Object within 1m: {boolean_msg.data}")
-            elif i == 1:  # Left
-                self.left_publisher.publish(msg)
-            elif i == 2:  # Right
-                self.right_publisher.publish(msg)
-            elif i == 3:  # Top
-                self.top_publisher.publish(msg)
-            elif i == 4:  # Bottom
-                self.bottom_publisher.publish(msg)
-
-        # Show the frame
-        cv2.imshow("depth", depthFrameColor)
-
-        if cv2.waitKey(1) == ord('q'):
-            rclpy.shutdown()
+                key = cv2.waitKey(1)
+                if key == ord('q'):
+                    break
+                elif key == ord('r'):
+                    if self.delta < 50:
+                        self.delta += 1
+                        hostSpatials.setDeltaRoi(self.delta)
+                elif key == ord('f'):
+                    if 3 < self.delta:
+                        self.delta -= 1
+                        hostSpatials.setDeltaRoi(self.delta)
 
 def main(args=None):
     rclpy.init(args=args)
-    depth_publisher = DepthPublisher()
-    rclpy.spin(depth_publisher)
-    depth_publisher.destroy_node()
-    rclpy.shutdown()
+    node = StereoCam()
+    try:
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
