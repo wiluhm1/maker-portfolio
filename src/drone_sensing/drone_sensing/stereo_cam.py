@@ -1,201 +1,165 @@
-#!/usr/bin/env python3
-
-import cv2
-import depthai as dai
-import numpy as np
-import math
-import time
 import rclpy
 from rclpy.node import Node
+import numpy as np
 from std_msgs.msg import Float32, Bool
-from sensor_msgs.msg import Image
+from geometry_msgs.msg import Twist
+from px4_msgs.msg import VehicleOdometry
+from px4_msgs.msg import OffboardControlMode
+from px4_msgs.msg import TrajectorySetpoint
+from px4_msgs.msg import VehicleCommand
+from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSDurabilityPolicy
 
-class HostSpatialsCalc:
-    def __init__(self, device):
-        self.calibData = device.readCalibration()
-        self.DELTA = 5
-        self.THRESH_LOW = 200
-        self.THRESH_HIGH = 30000
 
-    def setLowerThreshold(self, threshold_low):
-        self.THRESH_LOW = threshold_low
+class ObjectAvoidance(Node):
 
-    def setUpperThreshold(self, threshold_high):
-        self.THRESH_HIGH = threshold_high
-
-    def setDeltaRoi(self, delta):
-        self.DELTA = delta
-
-    def _check_input(self, roi, frame):
-        if len(roi) == 4:
-            return roi
-        if len(roi) != 2:
-            raise ValueError("You have to pass either ROI (4 values) or point (2 values)!")
-        self.DELTA = 5
-        x = min(max(roi[0], self.DELTA), frame.shape[1] - self.DELTA)
-        y = min(max(roi[1], self.DELTA), frame.shape[0] - self.DELTA)
-        return (x - self.DELTA, y - self.DELTA, x + self.DELTA, y + self.DELTA)
-
-    def _calc_angle(self, frame, offset, HFOV):
-        return math.atan(math.tan(HFOV / 2.0) * offset / (frame.shape[1] / 2.0))
-
-    def calc_spatials(self, depthData, roi, averaging_method=np.mean):
-        depthFrame = depthData.getFrame()
-        roi = self._check_input(roi, depthFrame)
-        xmin, ymin, xmax, ymax = roi
-        depthROI = depthFrame[ymin:ymax, xmin:xmax]
-        inRange = (self.THRESH_LOW <= depthROI) & (depthROI <= self.THRESH_HIGH)
-        HFOV = np.deg2rad(self.calibData.getFov(dai.CameraBoardSocket(depthData.getInstanceNum()), useSpec=False))
-        averageDepth = averaging_method(depthROI[inRange])
-        centroid = {
-            'x': int((xmax + xmin) / 2),
-            'y': int((ymax + ymin) / 2)
-        }
-        midW = int(depthFrame.shape[1] / 2)
-        midH = int(depthFrame.shape[0] / 2)
-        bb_x_pos = centroid['x'] - midW
-        bb_y_pos = centroid['y'] - midH
-        angle_x = self._calc_angle(depthFrame, bb_x_pos, HFOV)
-        angle_y = self._calc_angle(depthFrame, bb_y_pos, HFOV)
-        spatials = {
-            'z': averageDepth,
-            'x': averageDepth * math.tan(angle_x),
-            'y': -averageDepth * math.tan(angle_y)
-        }
-        return spatials, centroid
-
-class TextHelper:
-    def __init__(self) -> None:
-        self.bg_color = (0, 0, 0)
-        self.color = (255, 255, 255)
-        self.text_type = cv2.FONT_HERSHEY_SIMPLEX
-        self.line_type = cv2.LINE_AA
-
-    def putText(self, frame, text, coords):
-        cv2.putText(frame, text, coords, self.text_type, 0.5, self.bg_color, 3, self.line_type)
-        cv2.putText(frame, text, coords, self.text_type, 0.5, self.color, 1, self.line_type)
-
-    def rectangle(self, frame, p1, p2):
-        cv2.rectangle(frame, p1, p2, self.bg_color, 3)
-        cv2.rectangle(frame, p1, p2, self.color, 1)
-
-class FPSHandler:
     def __init__(self):
-        self.timestamp = time.time() + 1
-        self.start = time.time()
-        self.frame_cnt = 0
+        super().__init__("object_avoidance")
 
-    def next_iter(self):
-        self.timestamp = time.time()
-        self.frame_cnt += 1
+        qos_profile = QoSProfile(
+            reliability=QoSReliabilityPolicy.BEST_EFFORT,
+            durability=QoSDurabilityPolicy.TRANSIENT_LOCAL,
+            depth=10)
 
-    def fps(self):
-        return self.frame_cnt / (self.timestamp - self.start)
+        # message type, topic name, callback function, queue size
+        self.real_position = self.create_subscription(VehicleOdometry, '/fmu/out/vehicle_odometry', self.position_callback, qos_profile)
 
-class StereoCam(Node):
-    def __init__(self):
-        super().__init__('stereo_cam')
+        self.sub_1 = self.create_subscription(Float32, 'roi_1_distance', self.callback_1, 10)
+        self.sub_2 = self.create_subscription(Float32, 'roi_2_distance', self.callback_2, 10)
+        self.sub_3 = self.create_subscription(Float32, 'roi_3_distance', self.callback_3, 10)
+        self.sub_4 = self.create_subscription(Float32, 'roi_4_distance', self.callback_4, 10)
+        self.sub_5 = self.create_subscription(Float32, 'roi_5_distance', self.callback_5, 10)
+        self.sub_6 = self.create_subscription(Float32, 'roi_6_distance', self.callback_6, 10)
+        self.sub_7 = self.create_subscription(Float32, 'roi_7_distance', self.callback_7, 10)
+        self.sub_8 = self.create_subscription(Float32, 'roi_8_distance', self.callback_8, 10)
+        self.sub_9 = self.create_subscription(Float32, 'roi_9_distance', self.callback_9, 10)
 
-        # Create publishers for each ROI
-        self.roi_publishers = [
-            self.create_publisher(Float32, f'roi_{i}_distance', 10) for i in range(1, 10)
-        ]
+        self.bool_publisher = self.create_publisher(Bool, 'close_or_not', 10)
+        self.trajectoryPublisher = self.create_publisher(TrajectorySetpoint, '/fmu/in/trajectory_setpoint', 10)
+        #publish if or if not too close
+    
+        self.d1 = 0.0
+        self.d2 = 0.0
+        self.d3 = 0.0
+        self.d4 = 0.0
+        self.d5 = 0.0
+        self.d6 = 0.0
+        self.d7 = 0.0
+        self.d8 = 0.0
+        self.d9 = 0.0
+        self.altitude_bool = True 
+        self.xcord = 0.0   
+        self.ycord = 0.0
+        self.zcord = 0.0
+        self.target = [0.0, 0.0, 0.0]
 
-        timer_period = 0.5  # seconds
-        self.timer = self.create_timer(timer_period, self.run_depthai)
+        self.get_logger().info('Object Avoidance Started')
 
-        # Define multiple evenly spaced ROIs (3x3 grid)
-        self.rois = [
-            (0.0, 0.0, 0.33, 0.33),   # Top-left
-            (0.33, 0.0, 0.66, 0.33),  # Top-center
-            (0.66, 0.0, 1.0, 0.33),   # Top-right
-            (0.0, 0.33, 0.33, 0.66),  # Middle-left
-            (0.33, 0.33, 0.66, 0.66), # Center
-            (0.66, 0.33, 1.0, 0.66),  # Middle-right
-            (0.0, 0.66, 0.33, 1.0),   # Bottom-left
-            (0.33, 0.66, 0.66, 1.0),  # Bottom-center
-            (0.66, 0.66, 1.0, 1.0)    # Bottom-right
-        ]
-        self.delta = 5
-        self.hostSpatials = None
 
-    def run_depthai(self):
-        pipeline = dai.Pipeline()
-        monoLeft = pipeline.create(dai.node.MonoCamera)
-        monoRight = pipeline.create(dai.node.MonoCamera)
-        stereo = pipeline.create(dai.node.StereoDepth)
-        monoLeft.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
-        monoLeft.setBoardSocket(dai.CameraBoardSocket.LEFT)
-        monoRight.setResolution(dai.MonoCameraProperties.SensorResolution.THE_400_P)
-        monoRight.setBoardSocket(dai.CameraBoardSocket.RIGHT)
-        stereo.initialConfig.setConfidenceThreshold(255)
-        stereo.setLeftRightCheck(True)
-        stereo.setSubpixel(False)
-        monoLeft.out.link(stereo.left)
-        monoRight.out.link(stereo.right)
-        xoutDepth = pipeline.create(dai.node.XLinkOut)
-        xoutDepth.setStreamName("depth")
-        stereo.depth.link(xoutDepth.input)
-        xoutDisp = pipeline.create(dai.node.XLinkOut)
-        xoutDisp.setStreamName("disp")
-        stereo.disparity.link(xoutDisp.input)
+    def position_callback(self, msg):
+        min_height = 0.3               #meters CHANGE to preferred value
+        max_height = 2.9 - 0.8         #meters CHANGE to preferred value
 
-        with dai.Device(pipeline) as device:
-            depthQueue = device.getOutputQueue(name="depth")
-            dispQ = device.getOutputQueue(name="disp")
-            text = TextHelper()
-            fpsHandler = FPSHandler()
-            self.hostSpatials = HostSpatialsCalc(device)
+        self.xcord = self.msg.position[0]
+        self.ycord = self.msg.position[1]
+        self.zcord = self.msg.position[2]
 
-            while True:
-                depthData = depthQueue.get()
-                frame = dispQ.get().getFrame()
-                frame = (frame * (255 / stereo.initialConfig.getMaxDisparity())).astype(np.uint8)
-                frame = cv2.applyColorMap(frame, cv2.COLORMAP_JET)
+        if not (min_height <= self.zcord <= max_height):
+            self.altitude_bool = False
+            
+    def callback_1(self, msg):
+        self.d1 = msg.data
+        self.process_detections()
 
-                for i, roi in enumerate(self.rois):
-                    h, w = frame.shape[:2]
-                    roi_pixels = (
-                        int(roi[0] * w), int(roi[1] * h),
-                        int(roi[2] * w), int(roi[3] * h)
-                    )
-                    spatials, _ = self.hostSpatials.calc_spatials(depthData, roi_pixels)
-                    distance = spatials['z'] / 1000  # Convert to meters
+    def callback_2(self, msg):
+        self.d2 = msg.data
+        self.process_detections()
 
-                    # Publish distance for each ROI
-                    msg = Float32()
-                    msg.data = distance
-                    self.roi_publishers[i].publish(msg)
+    def callback_3(self, msg):
+        self.d3 = msg.data
+        self.process_detections()
 
-                    # Draw ROI rectangle
-                    text.rectangle(frame, (roi_pixels[0], roi_pixels[1]), (roi_pixels[2], roi_pixels[3]))
-                    # Put distance text
-                    text.putText(frame, f"ROI {i+1}: {distance:.2f}m", (roi_pixels[0] + 10, roi_pixels[1] + 20))
+    def callback_4(self, msg):
+        self.d4 = msg.data
+        self.process_detections()
 
-                cv2.imshow("depth", frame)
-                fpsHandler.next_iter()
-                fps = fpsHandler.fps()
-                text.putText(frame, f"FPS: {fps:.2f}", (10, 30))
+    def callback_5(self, msg):
+        self.d5 = msg.data
+        self.process_detections()
 
-                key = cv2.waitKey(1)
-                if key == ord('q'):
-                    break
-                elif key == ord('r'):
-                    if self.delta < 50:
-                        self.delta += 1
-                        self.hostSpatials.setDeltaRoi(self.delta)
-                elif key == ord('f'):
-                    if 3 < self.delta:
-                        self.delta -= 1
-                        self.hostSpatials.setDeltaRoi(self.delta)
+    def callback_6(self, msg):
+        self.d6 = msg.data
+        self.process_detections()
 
-def main(args=None):
+    def callback_7(self, msg):
+        self.d7 = msg.data
+        self.process_detections()
+
+    def callback_8(self, msg):
+        self.d8 = msg.data
+        self.process_detections()
+
+    def callback_9(self, msg):
+        self.d9 = msg.data
+        self.process_detections()
+
+
+    def trajectorypublish(self):
+        setpoint = TrajectorySetpoint()
+        setpoint.timestamp = int(int(self.get_clock().now().to_msg().sec) * 1e6)
+        setpoint.position = [float(self.target[0]), float(self.target[1]), float(self.target[2])]
+        setpoint.yaw = 0.0
+        self.trajectoryPublisher.publish(setpoint)
+
+    def process_detections(self):
+        increment = 0.05    #CHANGE to preferred value
+        height = 2.9        #in meters
+        min_distance = 1    #CHANGE to preferred value
+        up_counter = 0
+        down_counter = 0
+        middle_counter = 0
+
+        if self.altitude_bool:
+            down_counter = sum(1 for d in {self.d1, self.d2, self.d3} if d <= min_distance)
+            up_counter = sum(1 for d in {self.d7, self.d8, self.d9} if d <= min_distance)
+            middle_counter = sum(1 for d in {self.d4, self.d5, self.d6} if d <= min_distance)
+
+            if down_counter > up_counter and down_counter > middle_counter:
+                print("Something ABOVE")
+                #move down
+                self.zcord -= increment
+                print("Moving DOWN")
+
+            elif up_counter > down_counter and up_counter > middle_counter:
+                print("Something BELOW")
+                #move up
+                self.zcord += increment
+                print("Moving UP")
+
+            else:
+                print("Referencing altitude...")
+                if self.zcord > 0.5 * height:
+                    print(f"{self.zcord}m, moving DOWN")
+                    self.zcord -= increment
+                else:
+                    print(f"{self.zcord}m, moving UP")
+                    self.zcord += increment
+            self.target = [self.xcord, self.ycord, self.zcord]
+            self.trajectorypublish()
+            bool_msg = Bool(data=self.altitude_bool)
+            self.bool_publisher.publish(bool_msg)
+
+        
+def main(args=None):    
     rclpy.init(args=args)
-    node = StereoCam()
+    node = ObjectAvoidance()
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
+        pass
+    finally:
+        node.destroy_node()
         rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
+
