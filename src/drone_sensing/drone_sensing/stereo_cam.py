@@ -97,22 +97,24 @@ class StereoCam(Node):
         super().__init__('stereo_cam')
 
         # Create publishers for each ROI
-        self.center_publisher = self.create_publisher(Float32, 'roi_center_distance', 10)
-        self.left_publisher = self.create_publisher(Float32, 'roi_left_distance', 10)
-        self.right_publisher = self.create_publisher(Float32, 'roi_right_distance', 10)
-        self.top_publisher = self.create_publisher(Float32, 'roi_top_distance', 10)
-        self.bottom_publisher = self.create_publisher(Float32, 'roi_bottom_distance', 10)
+        self.roi_publishers = [
+            self.create_publisher(Float32, f'roi_{i}_distance', 10) for i in range(1, 10)
+        ]
 
         timer_period = 0.5  # seconds
         self.timer = self.create_timer(timer_period, self.run_depthai)
 
-        # Define multiple ROIs
+        # Define multiple evenly spaced ROIs (3x3 grid)
         self.rois = [
-            (0.25, 0.25, 0.75, 0.75),  # Center
-            (0.0, 0.25, 0.2, 0.75),    # Left
-            (0.8, 0.25, 1.0, 0.75),    # Right
-            (0.25, 0.0, 0.75, 0.2),    # Top
-            (0.25, 0.8, 0.75, 1.0)     # Bottom
+            (0.0, 0.0, 0.33, 0.33),   # Top-left
+            (0.33, 0.0, 0.66, 0.33),  # Top-center
+            (0.66, 0.0, 1.0, 0.33),   # Top-right
+            (0.0, 0.33, 0.33, 0.66),  # Middle-left
+            (0.33, 0.33, 0.66, 0.66), # Center
+            (0.66, 0.33, 1.0, 0.66),  # Middle-right
+            (0.0, 0.66, 0.33, 1.0),   # Bottom-left
+            (0.33, 0.66, 0.66, 1.0),  # Bottom-center
+            (0.66, 0.66, 1.0, 1.0)    # Bottom-right
         ]
         self.delta = 5
         self.hostSpatials = None
@@ -160,20 +162,10 @@ class StereoCam(Node):
                     spatials, _ = self.hostSpatials.calc_spatials(depthData, roi_pixels)
                     distance = spatials['z'] / 1000  # Convert to meters
 
-                    # Publish distances based on ROI index
+                    # Publish distance for each ROI
                     msg = Float32()
                     msg.data = distance
-
-                    if i == 0:  # Center
-                        self.center_publisher.publish(msg)
-                    elif i == 1:  # Left
-                        self.left_publisher.publish(msg)
-                    elif i == 2:  # Right
-                        self.right_publisher.publish(msg)
-                    elif i == 3:  # Top
-                        self.top_publisher.publish(msg)
-                    elif i == 4:  # Bottom
-                        self.bottom_publisher.publish(msg)
+                    self.roi_publishers[i].publish(msg)
 
                     # Draw ROI rectangle
                     text.rectangle(frame, (roi_pixels[0], roi_pixels[1]), (roi_pixels[2], roi_pixels[3]))
